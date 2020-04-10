@@ -50,3 +50,13 @@ while running:
     # Give the surface a color to separate it from the background
     surf.fill((0, 0, 0))
     rect = surf.get_rect()
+
+    # Put the center of surf at the center of the display
+    surf_center = (
+        (SCREEN_WIDTH-surf.get_width())/2,
+        (SCREEN_HEIGHT-surf.get_height())/2
+    )
+
+    # This line says "Draw surf onto the screen at the center"
+    screen.blit(surf, surf_center)
+    pygame.display.flip()
