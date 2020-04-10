@@ -98,6 +98,9 @@ class Cloud(pygame.sprite.Sprite):
 # Intialize pygame
 pygame.init()
 
+# Set up the clock for a decent framerate
+clock = pygame.time.Clock()
+
 # Create the screen object
 # The size is determined by constants SCREEN_WIDTH AND SCREEN_HEIGHT
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -170,12 +173,12 @@ while running:
         player.kill()
         running = False
 
-    # Fill the screen with black
-    screen.fill((0, 0, 0))
-
     # Draw all sprites
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
 
     # Update the display
     pygame.display.flip()
+
+    # Ensure the program maintains a maximum rate of 30 fps
+    clock.tick(30)
