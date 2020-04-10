@@ -95,6 +95,9 @@ class Cloud(pygame.sprite.Sprite):
             self.kill()
 
 
+# Setup for music and sound playback. Defaults are okay.
+pygame.mixer.init()
+
 # Intialize pygame
 pygame.init()
 
@@ -121,6 +124,12 @@ enemies = pygame.sprite.Group()
 clouds = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player) # to add a sprite to group is used add method with Object Player
+
+# Load and play background music
+# Sound source: Chris Baile = artist Tripnet
+# License: https://creativecommons.org/licenses/by/3.0
+pygame.mixer.music.load("sound/Sky_dodge_theme.ogg")
+pygame.mixer.music.play(loops=-1)  # -1 is infinte loop
 
 # Variable to keep the main loop running
 running = True
@@ -182,3 +191,7 @@ while running:
 
     # Ensure the program maintains a maximum rate of 30 fps
     clock.tick(30)
+
+# All done! Stop and quit the mixer
+pygame.mixer.music.stop()
+pygame.mixer.quit()
