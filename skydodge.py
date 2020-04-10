@@ -127,6 +127,12 @@ while running:
     # Update player sprite based on user keypresses
     player.update(pressed_keys)
 
+    # Check if any enemies have collided with the player
+    if pygame.sprite.spritecollideany(player, enemies):
+        # If so, then remove the player and stop the loop
+        player.kill()
+        running = False
+
     # Fill the screen with black
     screen.fill((0, 0, 0))
 
