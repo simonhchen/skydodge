@@ -50,7 +50,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom >= SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
 
-
 # Define the enemy object by extending pygame.sprite.Sprite
 # The surface you draw on the screen is now an attribute of 'enemy'
 class Enemy(pygame.sprite.Sprite):
@@ -68,7 +67,7 @@ class Enemy(pygame.sprite.Sprite):
 
     # Move the sprite based on the speed
     # Remove the sprite when it passes the left edge of the screen
-    def add(self):
+    def update(self):
         self.rect.move_ip(-self.speed, 0)
         if self.rect.right < 0:
             self.kill()
@@ -79,6 +78,10 @@ pygame.init()
 # Create the screen object
 # The size is determined by constants SCREEN_WIDTH AND SCREEN_HEIGHT
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Create custom event for adding a new enemy
+ADDENEMY = pygame.USEREVENT + 1
+pygame.time.set_timer(ADDENEMY, 250)
 
 # Instantiate the player. Will be rectangle initially
 player = Player()
@@ -102,12 +105,24 @@ while running:
             # Was it the ESCAPE key? If so, stop the loop
             if event.key == K_ESCAPE:
                 running = False
+
         # Did the user click the window close button? If so, stop the loop.
         elif event.type == QUIT:
             running = False
 
-    # Get the set of keys pressed and check for user input
+        # Add a new enemy?
+        elif event.type == ADDENEMY:
+            # Create the new enemy add it to sprite groups
+            new_enemy = Enemy()
+            enemies.add(new_enemy)
+            all_sprites.add(new_enemy)
+
+    # Get the set of keys pressed and check for user input and then update
     pressed_keys = pygame.key.get_pressed()
+    player.update(pressed_keys)
+
+    # Update the enemy position
+    enemies.update()
 
     # Update player sprite based on user keypresses
     player.update(pressed_keys)
