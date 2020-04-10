@@ -34,8 +34,10 @@ class Player(pygame.sprite.Sprite):
     def update(self, pressed_keys):
         if pressed_keys[K_UP]:
             self.rect.move_ip(0, -5)
+            move_up_sound.play
         if pressed_keys[K_DOWN]:
             self.rect.move_ip(0, 5)
+            move_down_sound.play
         if pressed_keys[K_LEFT]:
             self.rect.move_ip(-5, 0)
         if pressed_keys[K_RIGHT]:
@@ -126,10 +128,22 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player) # to add a sprite to group is used add method with Object Player
 
 # Load and play background music
-# Sound source: Chris Baile = artist Tripnet
+# Sound source: Chris Bailey = artist Tripnet
 # License: https://creativecommons.org/licenses/by/3.0
 pygame.mixer.music.load("sound/Sky_dodge_theme.ogg")
-pygame.mixer.music.play(loops=-1)  # -1 is infinte loop
+pygame.mixer.music.play(loops=-1)  # -1 is infinite loop
+pygame.mixer.music.set_volume(0.1)
+
+# Load all sound files
+# Sound source: Chris Bailey
+move_up_sound = pygame.mixer.Sound("sound/jet_up.ogg")
+move_down_sound = pygame.mixer.Sound("sound/jet_down.ogg")
+collision_sound = pygame.mixer.Sound("sound/Boom.ogg")
+
+# Adjust volume of the sounds
+move_up_sound.set_volume(0.6)
+move_down_sound.set_volume(0.6)
+collision_sound.set_volume(1.0)
 
 # Variable to keep the main loop running
 running = True
@@ -180,6 +194,16 @@ while running:
     if pygame.sprite.spritecollideany(player, enemies):
         # If so, then remove the player and stop the loop
         player.kill()
+
+        # Stop any moving sounds and play the collision
+        move_up_sound.stop()
+        move_down_sound.stop()
+        pygame.mixer.music.stop()
+        pygame.time.delay(50)
+        collision_sound.play()
+        pygame.time.delay(500)
+
+        # Stop the loop
         running = False
 
     # Draw all sprites
@@ -193,5 +217,4 @@ while running:
     clock.tick(30)
 
 # All done! Stop and quit the mixer
-pygame.mixer.music.stop()
 pygame.mixer.quit()
