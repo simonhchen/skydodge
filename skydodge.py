@@ -83,6 +83,13 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Instantiate the player. Will be rectangle initially
 player = Player()
 
+# Create groups to hold enemy sprites and all sprites
+# -enemies is used for collision detection and position updates
+# -all_sprites is used for rendering
+enemies = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player) # to add a sprite to group is used add method with Object Player
+
 # Variable to keep the main loop running
 running = True
 
@@ -108,8 +115,9 @@ while running:
     # Fill the screen with black
     screen.fill((0, 0, 0))
 
-    # Draw the player on the screen
-    screen.blit(player.surf, player.rect)
+    # Draw all sprites
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
 
     # Update the display
     pygame.display.flip()
