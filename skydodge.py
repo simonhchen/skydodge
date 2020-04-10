@@ -40,3 +40,13 @@ while running:
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 running = False
+
+    # Fill the screen with white
+    screen.fill((255, 255, 255))
+
+    # Create a surface and pass a tuple containing its length and width
+    surf = pygame.Surface((50,50))
+
+    # Give the surface a color to separate it from the background
+    surf.fill((0, 0, 0))
+    rect = surf.get_rect()
